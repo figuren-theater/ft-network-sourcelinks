@@ -1,0 +1,232 @@
+/**
+ * Retrieves the translation of text.
+ *
+ * @see https://developer.wordpress.org/block-editor/packages/packages-i18n/
+ */
+import { __ } from '@wordpress/i18n';
+
+/**
+ * React hook that is used to mark the block wrapper element.
+ * It provides all the necessary props like the class name.
+ *
+ * @see https://developer.wordpress.org/block-editor/packages/packages-block-editor/#useBlockProps
+ */
+import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
+
+
+/**
+ * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
+ * Those files can contain any CSS code that gets applied to the editor.
+ *
+ * @see https://www.npmjs.com/package/@wordpress/scripts#using-css
+ */
+// import './editor.scss';
+
+import { Spinner, Notice } from '@wordpress/components';
+import { useEntityRecords } from '@wordpress/core-data';
+import { useMemo } from '@wordpress/element';
+
+
+const getHostnameFromRegex = ( url ) => {
+  // run against regex
+  const matches = url.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
+  // extract hostname (will be null if no match is found)
+  if ( matches ) {
+
+  	const domain = matches[1].split('.');
+  	domain.pop();
+  	return domain.join('.');
+  }
+}
+
+
+
+/**
+ * [buildBlock description]
+ *
+ * Normally the 'ft_link' posttype lacks of the 
+ * normal args 'content', because its pt definition
+ * doesn't define 'Editor' as pt support.
+ *
+ * BUT, we added a post_permalink_filter,
+ * which grabs the post_permalink field
+ * and uses the post_content for it.
+ *
+ * So we can use 'post.link' over here.
+ *
+ * @package ft-network-sourcelinks
+ * @version 2022.04.01
+ * @author  Carsten Bach
+ *
+ * @see  https://developer.wordpress.org/rest-api/using-the-rest-api/backbone-javascript-client/#default-values
+ *
+ * @param   {object}     post [description]
+ * @return  {[type]}          [description]
+ */
+const buildBlock = ( post ) =>
+{
+  return [ 'core/social-link', {
+		label:   post.title.rendered,
+		service: getHostnameFromRegex( post.link ),
+		url:     post.link
+	} ];
+}
+
+ 
+// // GET
+// apiFetch( { path: '/wp/v2/ft_link' } ).then( ( posts ) => {
+//     console.log( posts );
+// } );
+/*
+wp.domReady( function() {
+
+
+});
+*/
+
+ 
+
+
+/**
+ * The edit function describes the structure of your block in the context of the
+ * editor. This represents what the editor will render when the block is used.
+ *
+ * @see https://developer.wordpress.org/block-editor/developers/block-api/block-edit-save/#edit
+ *
+ * @return {WPElement} Element to render.
+ */
+export default function Edit() {
+/*
+async get_inner_link_blocks() {
+
+	const api = wp.api;
+
+	//... use the client here
+	api.loadPromise.done( function() {
+
+		const query_args = {
+			// path: '/wp/v2/ft_link', // with apiFetch
+			data: { 
+				per_page: 25, // beware of the 5 'posts_per_page' default
+				// status: "publish",
+			}
+		}
+
+		return collection = await ( new api.collections.Ft_link() ).fetch( query_args ).then( ( posts ) => {
+		// const collection = apiFetch( query_args ).then( ( posts ) => {
+
+			if ( 0 === posts.length )
+				return
+
+			return ft_link_blocks = posts.map( buildBlock )
+
+	    })
+
+	} )
+
+}
+
+console.log( get_inner_link_blocks() );
+
+*/
+
+
+	const { links, hasResolvedLinks, totalLinks } = useLinkData();
+// console.log( links )
+
+	const ALLOWED_BLOCKS = [
+        'core/social-links'
+    ];
+
+    const TEMPLATE = [
+        [ 'core/social-links']
+        // [ 'core/social-links', { innerBlocks: ft_link_blocks } ]
+    ];
+	//	<div { ...useBlockProps() }>
+    //        <InnerBlocks
+    //            allowedBlocks={ ALLOWED_BLOCKS }
+    //            template={ TEMPLATE }
+    //            templateLock="all"
+    //        />
+	//	</div>
+	return (
+		<>
+			{ ! hasResolvedLinks && (
+				<div { ...useBlockProps() }>
+					<Spinner />
+				</div>
+			) }
+
+			{ hasResolvedLinks && totalLinks === null && (
+				<div { ...useBlockProps() }>
+					<Notice status={ 'warning' } isDismissible={ false }>
+						{ __( 'Link List: Cannot retrieve Links.' ) }
+					</Notice>
+				</div>
+			) }
+
+			{ totalLinks === 0 && (
+				<div { ...useBlockProps() }>
+					<Notice status={ 'info' } isDismissible={ false }>
+						{ __( 'Link List: Cannot retrieve Links.' ) }
+					</Notice>
+				</div>
+			) }
+
+			{ totalLinks > 0 && (
+				<div { ...useBlockProps() }>
+					<InnerBlocks
+    		            allowedBlocks={ ALLOWED_BLOCKS }
+    		            template={ TEMPLATE }
+    		            templateLock="all"
+    		        />
+				</div>
+			) }
+
+			<>
+			</>
+		</>
+	);
+}
+
+
+
+
+
+
+
+
+function useLinkData() {
+	const { records: links, hasResolved: hasResolvedLinks } = useEntityRecords(
+		'postType',
+		'ft_link',
+		{
+			// orderby: 'menu_order',
+			// order: 'asc',
+			// _fields: [ 'id', 'link', 'parent', 'title', 'menu_order' ],
+			per_page: -1,
+		}
+	);
+
+	return useMemo( () => {
+		/*// TODO: Once the REST API supports passing multiple values to
+		// 'orderby', this can be removed.
+		// https://core.trac.wordpress.org/ticket/39037
+		const sortedPages = sortBy( pages, [ 'menu_order', 'title.rendered' ] );
+		const pagesByParentId = sortedPages.reduce( ( accumulator, page ) => {
+			const { parent } = page;
+			if ( accumulator.has( parent ) ) {
+				accumulator.get( parent ).push( page );
+			} else {
+				accumulator.set( parent, [ page ] );
+			}
+			return accumulator;
+		}, new Map() );
+*/
+		return {
+			links,
+			hasResolvedLinks,
+			totalLinks: links?.length ?? null,
+		};
+	}, [ links, hasResolvedLinks ] );
+}

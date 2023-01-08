@@ -1,0 +1,35 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "figurentheater/filtered-links",
+	"version": "0.1.0",
+	"title": "Filtered Links",
+	"category": "widgets",
+	"icon": "admin-links",
+	"description": "Shows a filtered links list, prefilled with my URLs.",
+	"attributes": {
+		"link_category_slug": {
+			"type": "string",
+			"default": "own"
+		},
+		"tagName": {
+			"type": "string",
+			"default": "ul"
+		},
+		"humanReadable": {
+			"type": "boolean",
+			"default": true
+		}
+	},
+	"example": {
+		"viewportWidth": 500
+	},
+	"supports": {
+		"html": false,
+		"reusable": false
+	},
+	"textdomain": "ft-network-sourcelinks",
+	"editorScript": "file:filtered-links.js",
+	"editorStyle": "file:filtered-links.css",
+	"style": "file:filtered-links-style.css"
+}

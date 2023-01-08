@@ -1,0 +1,21 @@
+{
+    "translation-revision-date": "2022-06-08 23:43+0100",
+    "generator": "WP-CLI\/2.5.0",
+    "source": "build\/simple-links\/simple-links.js",
+    "domain": "messages",
+    "locale_data": {
+        "messages": {
+            "": {
+                "domain": "messages",
+                "lang": "de_DE",
+                "plural-forms": "nplurals=2; plural=(n != 1);"
+            },
+            "simple Social Links": [
+                ""
+            ],
+            "Shows a simple social-links list, but pre filled with my URLs. The ones I saved as ft_link.": [
+                ""
+            ]
+        }
+    }
+}

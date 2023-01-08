@@ -1,0 +1,14 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "figurentheater/simple-links",
+	"version": "0.1.0",
+	"title": "simple Social Links",
+	"category": "widgets",
+	"icon": "share",
+	"description": "Shows a simple social-links list, but pre filled with my URLs. The ones I saved as ft_link.",
+	"textdomain": "ft-network-sourcelinks",
+	"editorScript": "file:simple-links.js",
+	"editorStyle": "file:simple-links.css",
+	"style": "file:simple-links-style.css"
+}

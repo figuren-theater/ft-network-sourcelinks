@@ -1,0 +1,8 @@
+{
+	"name": "social-links",
+	"version": "0.1.0",
+	"description": "Shows a better version of the core social-links block - prefilled with the URLs you entered as separate Links",
+	"author": "Carsten Bach",
+	"license": "GPL-2.0-or-later",
+	"homepage": "https://websites.fuer.figuren.theater"
+}

@@ -1,0 +1,272 @@
+# Copyright (C) 2022 Carsten Bach
+# This file is distributed under the same license as the f.t | NETWORK Sources Management plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: f.t | NETWORK Sources Management 0.3.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/ft-network-sourcelinks\n"
+"Last-Translator: Carsten Bach\n"
+"Language-Team: figuren.theater\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: WP-CLI 2.6.0\n"
+"X-Domain: ft-network-sourcelinks\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;\n"
+"X-Poedit-Basepath: \n"
+"X-Poedit-SearchPath-0: .\n"
+"POT-Creation-Date: 2022-06-08T21:32:53+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+
+#. Plugin Name of the plugin
+msgid "f.t | NETWORK Sources Management"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "https://figuren.theater"
+msgstr ""
+
+#. Description of the plugin
+msgid "Manage external Links as 'other' personal profiles or external sources. Handles syncing content from thoose sites, using RSS-Bridge, friends, and the old native WordPress Link-Manager a little modified."
+msgstr ""
+
+#. Author of the plugin
+msgid "Carsten Bach"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://carsten-bach.de"
+msgstr ""
+
+#: inc/Network/Blocks/Patterns.php:95
+#: inc/Network/Blocks/Patterns.php:96
+msgid "Important Links"
+msgstr ""
+
+#: inc/Network/Blocks/Patterns.php:113
+msgid "Important Links Post Template"
+msgstr ""
+
+#: inc/Network/Post_Types/Post_Type__ft_link.php:125
+#: inc/Network/Post_Types/Post_Type__ft_link.php:199
+msgid "Link"
+msgstr ""
+
+#: inc/Network/Post_Types/Post_Type__ft_link.php:126
+#: inc/Network/Post_Types/Post_Type__ft_link.php:198
+#: inc/Network/Post_Types/Post_Type__ft_link.php:222
+msgid "Links"
+msgstr ""
+
+#: inc/Network/Post_Types/Post_Type__ft_link.php:200
+msgid "All Links"
+msgstr ""
+
+#: inc/Network/Post_Types/Post_Type__ft_link.php:201
+msgid "Link Archives"
+msgstr ""
+
+#: inc/Network/Post_Types/Post_Type__ft_link.php:202
+msgid "Link Attributes"
+msgstr ""
+
+#: inc/Network/Post_Types/Post_Type__ft_link.php:203
+msgid "Insert into Link"
+msgstr ""
+
+#: inc/Network/Post_Types/Post_Type__ft_link.php:204
+msgid "Uploaded to this Link"
+msgstr ""
+
+#: inc/Network/Post_Types/Post_Type__ft_link.php:205
+msgctxt "ft_link"
+msgid "Image"
+msgstr ""
+
+#: inc/Network/Post_Types/Post_Type__ft_link.php:206
+msgctxt "ft_link"
+msgid "Set image"
+msgstr ""
+
+#: inc/Network/Post_Types/Post_Type__ft_link.php:207
+msgctxt "ft_link"
+msgid "Remove image"
+msgstr ""
+
+#: inc/Network/Post_Types/Post_Type__ft_link.php:208
+msgctxt "ft_link"
+msgid "Use as image"
+msgstr ""
+
+#: inc/Network/Post_Types/Post_Type__ft_link.php:209
+msgid "Filter Links list"
+msgstr ""
+
+#: inc/Network/Post_Types/Post_Type__ft_link.php:210
+msgid "Links list navigation"
+msgstr ""
+
+#: inc/Network/Post_Types/Post_Type__ft_link.php:211
+msgid "Links list"
+msgstr ""
+
+#: inc/Network/Post_Types/Post_Type__ft_link.php:212
+msgid "New Link"
+msgstr ""
+
+#: inc/Network/Post_Types/Post_Type__ft_link.php:213
+msgid "Add New"
+msgstr ""
+
+#: inc/Network/Post_Types/Post_Type__ft_link.php:214
+msgid "Add New Link"
+msgstr ""
+
+#: inc/Network/Post_Types/Post_Type__ft_link.php:215
+msgid "Edit Link"
+msgstr ""
+
+#: inc/Network/Post_Types/Post_Type__ft_link.php:216
+msgid "View Link"
+msgstr ""
+
+#: inc/Network/Post_Types/Post_Type__ft_link.php:217
+msgid "View Links"
+msgstr ""
+
+#: inc/Network/Post_Types/Post_Type__ft_link.php:218
+msgid "Search Links"
+msgstr ""
+
+#: inc/Network/Post_Types/Post_Type__ft_link.php:219
+msgid "No Links found"
+msgstr ""
+
+#: inc/Network/Post_Types/Post_Type__ft_link.php:220
+msgid "No Links found in trash"
+msgstr ""
+
+#: inc/Network/Post_Types/Post_Type__ft_link.php:221
+msgid "Link:"
+msgstr ""
+
+#: inc/Network/Post_Types/Post_Type__ft_link.php:240
+msgid "Link Title"
+msgstr ""
+
+#: inc/Network/Post_Types/Post_Type__ft_link.php:297
+msgid "All Link Categories"
+msgstr ""
+
+#: inc/Network/Post_Types/Post_Type__ft_link.php:362
+msgid "Web Address"
+msgstr ""
+
+#: inc/Network/Taxonomies/Term__link_category__imprint.php:30
+msgctxt "Default Link-Category Name"
+msgid "Imprint relevant"
+msgstr ""
+
+#: inc/Network/Taxonomies/Term__link_category__imprint.php:31
+msgctxt "Default Link-Category Description"
+msgid "These Links belong to sites I'm responsible for, so show them in my imprint."
+msgstr ""
+
+#: inc/Network/Taxonomies/Term__link_category__own.php:30
+msgctxt "Default Link-Category Name"
+msgid "Own content"
+msgstr ""
+
+#: inc/Network/Taxonomies/Term__link_category__own.php:31
+msgctxt "Default Link-Category Description"
+msgid "These Links belong to my personel websites or profiles at public social networks, where you are the main publisher."
+msgstr ""
+
+#: inc/Network/Taxonomies/Term__link_category__privacy.php:30
+msgctxt "internal Privacy-related Link-Category Name"
+msgid "Privacy relevant"
+msgstr ""
+
+#: inc/Network/Taxonomies/Term__link_category__privacy.php:31
+msgctxt "internal Privacy-related Link-Category Description"
+msgid "These Links belong to portals where I'm as same as responsible for my users privacy as the portal owner."
+msgstr ""
+
+#: build/filtered-links/filtered-links.js:1
+#: src/block-editor/blocks/filtered-links/edit.js:128
+msgid "No Links available in the chosen category."
+msgstr ""
+
+#: build/filtered-links/filtered-links.js:1
+#: src/block-editor/blocks/filtered-links/index.js:45
+msgid "Filtered Links"
+msgstr ""
+
+#: build/filtered-links/filtered-links.js:1
+#: src/block-editor/blocks/filtered-links/index.js:51
+msgid "Shows a filtered links list, prefilled with my URLs."
+msgstr ""
+
+#: build/filtered-links/filtered-links.js:1
+#: src/block-editor/blocks/filtered-links/edit.js:209
+msgid "Show URLs or Title."
+msgstr ""
+
+#: build/filtered-links/filtered-links.js:1
+#: src/block-editor/blocks/filtered-links/edit.js:214
+msgid "Show Links by category."
+msgstr ""
+
+#: build/simple-links/simple-links.js:1
+#: src/block-editor/blocks/simple-links/index.js:45
+msgid "simple Social Links"
+msgstr ""
+
+#: build/simple-links/simple-links.js:1
+#: src/block-editor/blocks/simple-links/index.js:51
+msgid "Shows a simple social-links list, but pre filled with my URLs. The ones I saved as ft_link."
+msgstr ""
+
+#: build/social-links/social-links.js:1
+#: src/block-editor/blocks/social-links/index.js:51
+msgid "Social Icons"
+msgstr ""
+
+#: build/social-links/social-links.js:1
+#: src/block-editor/blocks/social-links/index.js:57
+msgid "Shows a better version of the core social-links block - prefilled with the URLs you entered as separate Links"
+msgstr ""
+
+#: build/filtered-links/block.json
+#: src/block-editor/blocks/filtered-links/block.json
+msgctxt "block title"
+msgid "Filtered Links"
+msgstr ""
+
+#: build/filtered-links/block.json
+#: src/block-editor/blocks/filtered-links/block.json
+msgctxt "block description"
+msgid "Shows a filtered links list, prefilled with my URLs."
+msgstr ""
+
+#: build/simple-links/block.json
+#: src/block-editor/blocks/simple-links/block.json
+msgctxt "block title"
+msgid "simple Social Links"
+msgstr ""
+
+#: build/simple-links/block.json
+#: src/block-editor/blocks/simple-links/block.json
+msgctxt "block description"
+msgid "Shows a simple social-links list, but pre filled with my URLs. The ones I saved as ft_link."
+msgstr ""
+
+#: build/social-links/block.json
+#: src/block-editor/blocks/social-links/block.json
+msgctxt "block title"
+msgid "Social Icons"
+msgstr ""
+
+#: build/social-links/block.json
+#: src/block-editor/blocks/social-links/block.json
+msgctx

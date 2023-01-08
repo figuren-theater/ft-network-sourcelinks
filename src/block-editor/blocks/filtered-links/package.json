@@ -1,0 +1,7 @@
+{
+	"name": "filtered-links",
+	"version": "0.1.0",
+	"description": "Shows a filtered links list, prefilled with my URLs.",
+	"author": "Carsten Bach",
+	"license": "GPL-2.0-or-later"
+}

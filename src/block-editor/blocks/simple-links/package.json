@@ -1,0 +1,7 @@
+{
+	"name": "simple-links",
+	"version": "0.1.0",
+	"description": "Shows a simple social-links list, but pre filled with my URLs. The ones I saved as ft_link.",
+	"author": "Carsten Bach",
+	"license": "GPL-2.0-or-later"
+}
