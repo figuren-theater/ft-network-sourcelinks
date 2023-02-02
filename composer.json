@@ -25,5 +25,8 @@
 	"require": {
         "php": ">=7.1",
         "johnpbloch/wordpress": "^6.0"
-	}
+	},
+    "suggest": {
+        "figuren-theater/ft-onboarding": "Contains the mandatory filter, which will help to create 'individual default' links during site-installation."
+    }
 }

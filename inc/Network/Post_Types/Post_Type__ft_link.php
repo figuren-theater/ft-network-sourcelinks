@@ -107,10 +107,10 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 	 *
 	 * Structural Example:
 	 * 		'tax_input'    => array(
-	.*.			'hierarchical_tax'     => array( 13, 10 ),
-	.*.			'non_hierarchical_tax' => 'tax name 1, tax name 2',
-	.*.		),
-	.*.
+	 *			'hierarchical_tax'     => array( 13, 10 ),
+	 *			'non_hierarchical_tax' => 'tax name 1, tax name 2',
+	 *		),
+	 *
 	 */
 	public function get_post_tax() : Array
 	{

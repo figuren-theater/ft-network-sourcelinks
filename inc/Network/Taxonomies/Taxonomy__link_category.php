@@ -58,8 +58,9 @@ class Taxonomy__link_category extends Taxonomy__Abstract implements EventManager
 			'load-edit-tags.php' => 'is_activation_needed',
 			
 
-			'Figuren_Theater\Network\Setup\insert_first_content'                => 'activation',
-			'Figuren_Theater\Network\Taxonomies\link_category\needs_activation' => 'activation',
+			// 'Figuren_Theater\Network\Setup\insert_first_content'                => 'activation',
+			'Figuren_Theater\Onboarding\Sites\Installation\insert_first_content' => 'activation',
+			'Figuren_Theater\Network\Taxonomies\link_category\needs_activation'  => 'activation',
 
 		);
 	}
