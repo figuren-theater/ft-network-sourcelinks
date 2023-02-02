@@ -57,9 +57,6 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 
 			'save_post_' . static::NAME      => [ 'find_importable_endpoint', 10, 3 ],
 
-			__NAMESPACE__ . '\\found_importable_endpoint'      => 'save_importable_endpoint',
-
-
 			// FRONTEND
 			'post_type_link'                 => [ 'permalink_source_url', 10, 2 ],
 
@@ -219,7 +216,7 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 				#\do_action( 'qm/info', sprintf( $pattern, $new_url ) . ' can be imported.' );
 				$found = true;
 				\do_action( 
-					__NAMESPACE__ . '\\found_importable_endpoint',
+					__NAMESPACE__ . '\\Post_Type__ft_link\\found_importable_endpoint',
 					sprintf( $pattern, $new_url )
 				);
 			} 
@@ -235,19 +232,6 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 		return $found;
 	}
 
-	public function save_importable_endpoint( string $importable_endpoint ) : void {
-
-		$option = \get_option( 'wpursstoposts_options' );
-
-
-		$option['feeds'] = $option['feeds'] . "\n" . $importable_endpoint;
-
-		\update_option( 'wpursstoposts_options', $option );
-
-		// \do_action( 'qm/info', $option );
-		// error_log(var_export([__FILE__,'save_importable_endpoint', $option],true));
-
-	}
 
 	protected function prepare_pt() : void {}
 
