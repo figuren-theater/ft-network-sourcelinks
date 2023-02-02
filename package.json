@@ -1,8 +1,8 @@
 {
 	"name": "ft-network-sourcelinks",
-	"version": "0.3.0",
+	"version": "0.4.0",
 	"author": "Carsten Bach",
-	"license": "GPL-2.0-or-later",
+	"license": "GPL-3.0-or-later",
 	"main": "build/index.js",
 	"scripts": {
 		"build": "wp-scripts build  --webpack-src-dir=src/block-editor/blocks --webpack-copy-php",
