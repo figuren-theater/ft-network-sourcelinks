@@ -1,14 +1,14 @@
 {
-	"$schema": "https://schemas.wp.org/trunk/block.json",
-	"apiVersion": 2,
-	"name": "figurentheater/social-links",
-	"version": "0.1.0",
-	"title": "Social Icons",
-	"category": "widgets",
-	"icon": "share",
-	"description": "Shows a better version of the core social-links block - prefilled with the URLs you entered as separate Links",
-	"textdomain": "ft-network-sourcelinks",
-	"editorScript": "file:social-links.js",
-	"editorStyle": "file:social-links.css",
-	"style": "file:social-links-style.css"
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "figurentheater/social-links",
+  "version": "0.1.0",
+  "title": "Social Icons",
+  "category": "widgets",
+  "icon": "share",
+  "description": "Shows a better version of the core social-links block - prefilled with the URLs you entered as separate Links",
+  "textdomain": "ft-network-sourcelinks",
+  "editorScript": "file:social-links.js",
+  "editorStyle": "file:social-links.css",
+  "style": "file:social-links-style.css"
 }
