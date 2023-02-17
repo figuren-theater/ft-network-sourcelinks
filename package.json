@@ -20,7 +20,5 @@
 		"@wordpress/scripts": "^22.3.0"
 	},
 	"dependencies": {
-		"@wordpress/icons": "^8.3.0",
-		"lodash.assign": "^4.2.0"
 	}
 }
