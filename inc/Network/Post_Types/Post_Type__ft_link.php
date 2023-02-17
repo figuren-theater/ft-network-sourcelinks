@@ -19,8 +19,7 @@ use WP_Post;
  * We need this post_type on every site,
  *
  */
-class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\SubscriberInterface, Post_Type__CanCreatePosts__Interface
-{
+class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\SubscriberInterface, Post_Type__CanCreatePosts__Interface {
 
 	/**
 	 * Our growing up post_type
@@ -34,10 +33,11 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 	 */
 	static private $instance = null;
 
+	protected $query = null;
 
-	function __construct($arguments = null)
-	{
+	function __construct( $arguments = null) {
 		$this->arguments = ( $arguments ) ? $arguments : [];
+		$this->query     = \Figuren_Theater\FT_Query::init();
 	}
 
 	/**
@@ -55,7 +55,13 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 
 			'add_meta_boxes_' . static::NAME => 'modify_metaboxes',
 
-			'save_post_' . static::NAME      => [ 'find_importable_endpoint', 10, 3 ],
+			// just handle multiple calls on that same action
+			'save_post_' . static::NAME      => [ 'save_post__hooks', 0 ],
+
+
+			// moved to ::branch:: 
+			// __NAMESPACE__ . '\\found_importable_endpoint'      => 'save_importable_endpoint',
+
 
 			// FRONTEND
 			'post_type_link'                 => [ 'permalink_source_url', 10, 2 ],
@@ -116,6 +122,12 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 
 		return $tax_input;
 	}
+	public static function save_post__hooks() : void {
+		// invalidate cache
+		\add_action( 'save_post_' . static::NAME, [ static::get_instance(), 'delete_transient'], 10 );
+		// maybe @TODO, move to correct spot
+		\add_action( 'save_post_' . static::NAME, [ static::get_instance(), 'find_importable_endpoint'], 10, 3 );		
+	}
 
 
 	public static function find_importable_endpoint( int $post_ID, WP_Post $post, bool $update ) : void {
@@ -159,9 +171,9 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 
 	}
 
-	public static function has_importable_endpoint( string $new_url ) : bool {
+	public static function get_importable_services() : array {
 		
-		$services = [
+		return [
 			// Example
 			// do not add any protocoll
 			// 
@@ -205,8 +217,12 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 
 		];
 
+	}
+
+	public static function has_importable_endpoint( string $new_url ) : bool {
+
 		$found = false;
-		foreach ( $services as $url_to_search => $pattern ) {
+		foreach ( static::get_importable_services() as $url_to_search => $pattern ) {
 	
 			if ( $found )
 				return $found;
@@ -526,6 +542,83 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 			self::$instance = new self;
 		return self::$instance;
 	}
+
+
+
+
+
+	/**
+	 * @todo Everything.
+	 * 
+	 * [__is_ft_link_privacy_relevant description]
+	 *
+	 * @package [package]
+	 * @since   3.0
+	 *
+	 * @param   string    $url_short [description]
+	 * @return  [type]               [description]
+	 */
+	public static function __is_privacy_relevant( string $url_short ) : bool {
+
+		return (bool) array_filter(
+			static::get_importable_services(),
+			function ( string $service_url ) use ( $url_short ) {
+				$service_url = ltrim( $service_url, '.');
+				return false !== strpos( $url_short, $service_url );
+			},
+			ARRAY_FILTER_USE_KEY
+		);
+
+	// array_keys( Post_Types\Post_Type__ft_link::get_importable_services() )
+		return false;
+	}
+
+	
+	// Create a simple function to delete our transient
+	public static function delete_transient() {
+		\delete_transient( 'ft_link_own_q' );
+	}
+
+
+	public function get_queried_urls() : array {
+		// Get any existing copy of our transient data
+		if ( false === ( $ft_link_query = \get_transient( 'ft_link_own_q' ) ) ) {
+			// It wasn't there, so regenerate the data and save the transient
+			$ft_link_query = $this->query_urls();
+			\set_transient( 'ft_link_own_q', $ft_link_query, 7 * \DAY_IN_SECONDS );
+		}
+		return $ft_link_query;
+	}
+	
+	public function query_urls() : array {
+
+		// get all IDs of 'Links' in our 'Own' 'link_category' now,
+		// to prevent multiple DB lookups, depending on the amount of links
+		return $this->query->find_many_by_type(
+			static::NAME,
+			'publish',
+			[
+				'fields' => 'ids',
+
+				// 'update_post_meta_cache' => false,
+				// 'update_post_term_cache' => false,
+
+				'tax_query' => array(
+					array(
+						'taxonomy' => Taxonomies\Taxonomy__link_category::NAME,
+						// 'field'    => 'term_id',
+						// 'field'    => 'term_taxonomy_id', // WRONG
+						'field'    => 'slug',
+						// 'terms'    => intval( \get_option("default_{$link_category}") ),
+						'terms'    => Taxonomies\Term__link_category__own::SLUG,
+						'include_children' => true,
+					),
+				),
+			]
+		);
+	}
+
+
 }
 
 
@@ -564,18 +657,22 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 
 function debug_Post_Type__ft_link(){
 
-	$ft_link = new Post_Type__ft_link();
-
-	 $ft_link->has_importable_endpoint( 'https://juliaraab.de' );
-	 $ft_link->has_importable_endpoint( 'https://wordpress.com/juliaraab' );
-	 $ft_link->has_importable_endpoint( 'https://juliaraab.tumblr.com' );
-	 $ft_link->has_importable_endpoint( 'https://juliaraab.blogspot.com' );
-	 $ft_link->has_importable_endpoint( 'https://medium.com/juliaraab' );
+	\do_action( 'qm/info', Post_Type__ft_link::__is_privacy_relevant( 'carsten-bach.de' ) );
+	\do_action( 'qm/info', Post_Type__ft_link::__is_privacy_relevant( 'jimdo.com/carsten-bach.de' ) );
 
 
-	$option = \get_option( 'wpursstoposts_options' );
+#	$ft_link = new Post_Type__ft_link();
 
-	\do_action( 'qm/info', $option );
+#	 $ft_link->has_importable_endpoint( 'https://juliaraab.de' );
+#	 $ft_link->has_importable_endpoint( 'https://wordpress.com/juliaraab' );
+#	 $ft_link->has_importable_endpoint( 'https://juliaraab.tumblr.com' );
+#	 $ft_link->has_importable_endpoint( 'https://juliaraab.blogspot.com' );
+#	 $ft_link->has_importable_endpoint( 'https://medium.com/juliaraab' );
+#
+#
+#	$option = \get_option( 'wpursstoposts_options' );
+#
+#	\do_action( 'qm/info', $option );
 
 	// \do_action( 'qm/info', '{fn}: {value}', [
 		// 'fn' => "current_user_can( 'manage_links' )",

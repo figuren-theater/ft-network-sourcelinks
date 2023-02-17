@@ -30,16 +30,6 @@ class Preset__wpseo_social implements EventManager\SubscriberInterface {
 	 */
 	protected $urls = [];
 
-	protected $query = null;
-
-
-	// function __construct( Array $urls )
-	function __construct()
-	{
-		$this->query = \Figuren_Theater\FT_Query::init();
-	}
-
-
 	/**
 	 * Returns an array of hooks that this subscriber wants to register with
 	 * the WordPress plugin API.
@@ -53,9 +43,8 @@ class Preset__wpseo_social implements EventManager\SubscriberInterface {
 		);
 	}
 
-
-	protected function prepare_urls() : Array
-	{
+	// protected function prepare_urls() : array
+	protected function get_prepared_urls() : array {
 
 		if( !empty( $this->urls ) )
 			return $this->urls;
@@ -66,32 +55,12 @@ class Preset__wpseo_social implements EventManager\SubscriberInterface {
 		if( empty( $urls ) )
 			return []; // we can't do anything with nothing
 
-		$link_category = Taxonomies\Taxonomy__link_category::NAME;
-
 		// get all IDs of 'Links' in our 'Own' 'link_category' now,
 		// to prevent multiple DB lookups, depending on the amount of links
-		$_social_links = $this->query->find_many_by_type(
-			Post_Types\Post_Type__ft_link::NAME,
-			'publish',
-			[
-				'fields' => 'ids',
+		// $_social_links = $this->query_urls();
+		$post_type__ft_link = Post_Types\Post_Type__ft_link::get_instance();
+		$_social_links = $post_type__ft_link->get_queried_urls();
 
-				// 'update_post_meta_cache' => false,
-				// 'update_post_term_cache' => false,
-
-				'tax_query' => array(
-					array(
-						'taxonomy' => $link_category,
-						// 'field'    => 'term_id',
-						// 'field'    => 'term_taxonomy_id', // WRONG
-						'field'    => 'slug',
-						// 'terms'    => intval( \get_option("default_{$link_category}") ),
-						'terms'    => Taxonomies\Term__link_category__own::SLUG,
-						'include_children' => true,
-					),
-				),
-			]
-		);
 		if( is_a( $_social_links, 'WP_Error' ) )
 			return []; // we can't do anything with nothing
 
@@ -178,12 +147,12 @@ class Preset__wpseo_social implements EventManager\SubscriberInterface {
 	 * @param   bool         $wpseo_social [description]
 	 * @return  [type]                     [description]
 	 */
-	public function pre_option_wpseo_social( Array|bool $wpseo_social ) : Array
-	{
+	public function pre_option_wpseo_social( array|bool $wpseo_social ) : array {
 		$wpseo_social = ( is_array( $wpseo_social ) ) ? $wpseo_social : [];
 
 		//
-		$this->prepare_urls();
+		// $this->prepare_urls();
+		$this->get_prepared_urls();
 
 		if( empty( $this->urls ) )
 			return $wpseo_social;

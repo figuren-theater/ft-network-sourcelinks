@@ -232,11 +232,19 @@ class Management implements EventManager\SubscriberInterface
 			Post_Types\Post_Type__ft_link::NAME,
 			'publish',
 			[
-				'cache_results' => false,
+			#	'cache_results' => false,
+			#	'update_post_meta_cache' => false,
+			#	'update_post_term_cache' => false,
+
+			#	'suppress_filters' => true,
+
+
+				## second try
+				'cache_results'          => true,
 				'update_post_meta_cache' => false,
 				'update_post_term_cache' => false,
 
-				'suppress_filters' => true,
+				// 'suppress_filters'       => true,
 			]
 		);
 
