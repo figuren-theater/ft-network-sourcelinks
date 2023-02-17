@@ -21,8 +21,7 @@ use Figuren_Theater\Network\Taxonomies;
  * 4. Setting your URLs as Option of third-party plugins, like for yoasts 'wpseo_social' option
  *
  */
-class Preset__wpseo_social implements EventManager\SubscriberInterface
-{
+class Preset__wpseo_social implements EventManager\SubscriberInterface {
 
 
 	/**
@@ -47,11 +46,10 @@ class Preset__wpseo_social implements EventManager\SubscriberInterface
 	 *
 	 * @return array
 	 */
-	public static function get_subscribed_events() : Array
+	public static function get_subscribed_events() : array
 	{
 		return array(
-			// 'admin_menu' => 'enable__on_admin', //
-			'pre_option_wpseo_social' => ['pre_option_wpseo_social',100]
+			'pre_option_wpseo_social' => ['pre_option_wpseo_social',100],
 		);
 	}
 
@@ -148,7 +146,6 @@ class Preset__wpseo_social implements EventManager\SubscriberInterface
 
 				// get "sub.sub.domainname.tld"
 				$_clean_url = parse_url( $_url, PHP_URL_HOST );
-#wp_die( var_export([$_clean_url,$_url],true));
 				// cut into pieces
 				$_clean_url = explode( '.', $_clean_url );
 				// strip .TLD
@@ -240,16 +237,5 @@ class Preset__wpseo_social implements EventManager\SubscriberInterface
 	}
 
 
-
-	public function enable__on_admin() : void
-	{
-		// $this->debug();
-	}
-
-
-	protected function debug()
-	{
-		\do_action( 'qm/debug', $this->urls );
-		\do_action( 'qm/debug', \get_option('wpseo_social') );
-	}
+	public function enable__on_admin() : void {}
 }

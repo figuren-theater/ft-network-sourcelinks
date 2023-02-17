@@ -216,7 +216,7 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 				#\do_action( 'qm/info', sprintf( $pattern, $new_url ) . ' can be imported.' );
 				$found = true;
 				\do_action( 
-					__NAMESPACE__ . '\\Post_Type__ft_link\\found_importable_endpoint',
+					__NAMESPACE__ . '\\found_importable_endpoint',
 					sprintf( $pattern, $new_url )
 				);
 			} 
@@ -231,7 +231,6 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 
 		return $found;
 	}
-
 
 	protected function prepare_pt() : void {}
 
