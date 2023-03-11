@@ -55,9 +55,8 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 
 			'add_meta_boxes_' . static::NAME => 'modify_metaboxes',
 
-			// just handle multiple calls on that same action
-			'save_post_' . static::NAME      => [ 'save_post__hooks', 0 ],
-
+			// invalidate cache
+			'save_post_' . static::NAME      => [ 'delete_transient', 10 ],
 
 			// moved to ::branch:: 
 			// __NAMESPACE__ . '\\found_importable_endpoint'      => 'save_importable_endpoint',
@@ -122,131 +121,7 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 
 		return $tax_input;
 	}
-	public static function save_post__hooks() : void {
-		// invalidate cache
-		\add_action( 'save_post_' . static::NAME, [ static::get_instance(), 'delete_transient'], 10 );
-		// maybe @TODO, move to correct spot
-		\add_action( 'save_post_' . static::NAME, [ static::get_instance(), 'find_importable_endpoint'], 10, 3 );		
-	}
 
-
-	public static function find_importable_endpoint( int $post_ID, WP_Post $post, bool $update ) : void {
-		
-		// run only on the first run
-		if ( $update )
-			return;
-
-		// make sure we have anything to work with
-		if ( empty( $post->post_content ) )
-			return;
-
-		// make sure it is a well formed URL
-		$new_url = \esc_url( 
-			$post->post_content,
-			[
-				'http',
-				'https'
-			],
-			'db'
-		);
-		if ( empty( $new_url ) )
-			return;
-
-		$new_url = \untrailingslashit( $new_url );
-
-		// well prepared,
-		// let's go
-		// 
-		// hand the URL to our RSS-detective
-		if ( static::has_importable_endpoint( $new_url ) )
-			// we found something ...
-			\wp_set_object_terms( 
-				$post_ID,
-				[
-					'is-importable',
-				],
-				'link_category',
-				true
-			);
-
-	}
-
-	public static function get_importable_services() : array {
-		
-		return [
-			// Example
-			// do not add any protocoll
-			// 
-			// 'url-to-search.domain' => '%s/importable/endpoint/',
-			
-			// 
-			'.blogspot.com'  => '%s/feeds/posts/default',
-			
-			// !!
-			'.jimdo.com'     => '%s/rss/blog/',
-			'.jimdofree.com' => '%s/rss/blog/',
-			
-			// 
-			'.tumblr.com'    => '%s/rss',
-			
-			// 
-			'vimeo.com'      => '%s/videos/rss',
-			
-			// 
-			'wix.com'        => '%s/blog-feed.xml',
-			
-			// 
-			'wordpress.com'  => '%s/feed/',
-			
-			// 
-			'youtube.com'    => '%s',
-			
-			// 
-			// 'medium.com/example-site' => 'https://medium.com/feed/example-site',
-			// 
-			// 'twitter.com/example-site' => 'https://nitter.com/...???.../example-site/feed/',
-			// 
-			// 'flickr.com/example-site' => 'https://flickr.com/...???.../some-cryptic-flickr-id',
-
-
-			// NO WAY
-			// - other than a sarcastic blog post - 
-			// 
-			// facebook.com
-			// weebly.com
-
-		];
-
-	}
-
-	public static function has_importable_endpoint( string $new_url ) : bool {
-
-		$found = false;
-		foreach ( static::get_importable_services() as $url_to_search => $pattern ) {
-	
-			if ( $found )
-				return $found;
-
-			if ( false !== strpos( $new_url, $url_to_search ) ) {
-
-				#\do_action( 'qm/info', sprintf( $pattern, $new_url ) . ' can be imported.' );
-				$found = true;
-				\do_action( 
-					__NAMESPACE__ . '\\found_importable_endpoint',
-					sprintf( $pattern, $new_url )
-				);
-			} 
-		}
-
-		if ( $found )
-			return $found;
-
-		\do_action( 'qm/warning', '{new_url} kann nicht importiert werden.', [
-			'new_url' => $new_url,
-		] );
-
-		return $found;
-	}
 
 	protected function prepare_pt() : void {}
 
@@ -569,7 +444,6 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 			ARRAY_FILTER_USE_KEY
 		);
 
-	// array_keys( Post_Types\Post_Type__ft_link::get_importable_services() )
 		return false;
 	}
 
