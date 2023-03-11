@@ -177,6 +177,7 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 				// Features\UtilityFeaturesManager::TAX,
 				// Taxonomies\Taxonomy__ft_site_shadow::NAME, # must be here to allow setting its terms, even when hidden
 				'link_category',
+				Taxonomies\Taxonomy__ft_link_shadow::NAME,
 			],
 
 			// 'rewrite' => true,  // enables editable post_name, called 'permalink|slug'
@@ -389,7 +390,16 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 	}
 
 
-
+	/**
+	 * Filters the permalink for a post of a custom post type.
+	 *
+	 * @see   https://developer.wordpress.org/reference/hooks/post_type_link/
+	 *
+	 * @param string  $post_link The post's permalink.
+	 * @param WP_Post $post      The post in question.
+	 * @param bool    $leavename Whether to keep the post name.
+	 * @param bool    $sample    Is it a sample permalink.
+	 */
 	/**
 	 * Change the post's permalink to use its source URL instead.
 	 *
@@ -400,7 +410,7 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 	 *
 	 * @return string
 	 */
-	public function permalink_source_url( $permalink, $post ) {
+	public function permalink_source_url( string $permalink, WP_Post $post ) : string {
 		if ( static::NAME !== $post->post_type ) {
 			return $permalink;
 		}

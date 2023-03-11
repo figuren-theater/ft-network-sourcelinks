@@ -109,6 +109,12 @@ class Management implements EventManager\SubscriberInterface
 			Post_Types\Post_Type__ft_link::get_instance()
 		);
 
+		// 1.1 Register our shadow-taxonomy for the 'ft_link' post_type
+		\Figuren_Theater\API::get('TAX')->add(
+			Taxonomies\Taxonomy__ft_link_shadow::NAME,
+			Taxonomies\Taxonomy__ft_link_shadow::get_instance()
+		);
+
 		// 2. Re-Use old and existing 'link_category'
 		\Figuren_Theater\FT::site()->EventManager->add_subscriber( new Taxonomies\Taxonomy__link_category );
 
