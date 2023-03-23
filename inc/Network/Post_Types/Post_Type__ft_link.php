@@ -4,8 +4,6 @@ declare(strict_types=1);
 namespace Figuren_Theater\Network\Post_Types;
 
 use Figuren_Theater\inc\EventManager;
-
-// use Figuren_Theater\Network\Features;
 use Figuren_Theater\Network\Taxonomies;
 use Figuren_Theater\Network\Users;
 
@@ -174,7 +172,6 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 			'hierarchical'        => false, // that to FALSE if not really needed, for performance reasons
 			'description'         => '',
 			'taxonomies'          => [
-				// Features\UtilityFeaturesManager::TAX,
 				// Taxonomies\Taxonomy__ft_site_shadow::NAME, # must be here to allow setting its terms, even when hidden
 				'link_category',
 				Taxonomies\Taxonomy__ft_link_shadow::NAME,
