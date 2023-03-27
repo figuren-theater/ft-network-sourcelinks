@@ -56,10 +56,6 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 			// invalidate cache
 			'save_post_' . static::NAME      => [ 'delete_transient', 10 ],
 
-			// moved to ::branch:: 
-			// __NAMESPACE__ . '\\found_importable_endpoint'      => 'save_importable_endpoint',
-
-
 			// FRONTEND
 			'post_type_link'                 => [ 'permalink_source_url', 10, 2 ],
 
@@ -76,13 +72,13 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 	public function get_post_data() : Array
 	{
 		return [
-			'post_author' => ( isset( $this->arguments['user_id'] ) ) ? $this->arguments['user_id'] : Users\ft_bot::id(), 
-			'post_title' => $this->arguments['new_post_title'],
-			'post_content' => $this->arguments['new_post_content'],
-			'post_status' => 'publish', // start with private, switch to publish on later point
-			'post_type' => self::NAME,
+			'post_author'    => ( isset( $this->arguments['user_id'] ) ) ? $this->arguments['user_id'] : Users\ft_bot::id(), 
+			'post_title'     => $this->arguments['new_post_title'],
+			'post_content'   => $this->arguments['new_post_content'],
+			'post_status'    => 'publish', // start with private, switch to publish on later point
+			'post_type'      => self::NAME,
 			'comment_status' => 'closed',
-			'ping_status' => 'closed',
+			'ping_status'    => 'closed',
 			// 'tax_input' => $this->get_post_tax(),
 			// 'meta_input' => $this->get_post_meta(),
 		];
@@ -120,7 +116,6 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 		return $tax_input;
 	}
 
-
 	protected function prepare_pt() : void {}
 
 
@@ -152,7 +147,7 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 				// 'comments',
 				// 'revisions',
 				// 'page-attributes',
-				'post-formats',
+				// 'post-formats',
 			),
 
 			'menu_icon'           => 'dashicons-admin-links',
@@ -172,7 +167,6 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 			'hierarchical'        => false, // that to FALSE if not really needed, for performance reasons
 			'description'         => '',
 			'taxonomies'          => [
-				// Taxonomies\Taxonomy__ft_site_shadow::NAME, # must be here to allow setting its terms, even when hidden
 				'link_category',
 				Taxonomies\Taxonomy__ft_link_shadow::NAME,
 			],
@@ -356,16 +350,12 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 
 
 
-	public function modify_metaboxes() : void
-	{
+	public function modify_metaboxes() : void {
 
 		\remove_meta_box( 'slugdiv', null, 'normal' );
 
 		if( ! \current_user_can( 'manage_sites' ) )
 			\remove_meta_box( 'postcustom', null, 'normal' );
-
-
-		// \add_meta_box( 'ft_links_post_formats', __( 'Post Formats' ), [$this, 'ft_links_post_formats_metabox'], null, 'side' );
 	}
 
 	public function post_content__metabox( WP_Post $post ) {
@@ -396,8 +386,8 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 	 * @param WP_Post $post      The post in question.
 	 * @param bool    $leavename Whether to keep the post name.
 	 * @param bool    $sample    Is it a sample permalink.
-	 */
-	/**
+	 *
+	 *
 	 * Change the post's permalink to use its source URL instead.
 	 *
 	 * @param string $permalink
@@ -439,7 +429,7 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 	 *
 	 * @param   string    $url_short [description]
 	 * @return  [type]               [description]
-	 */
+
 	public static function __is_privacy_relevant( string $url_short ) : bool {
 
 		return (bool) array_filter(
@@ -453,7 +443,7 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 
 		return false;
 	}
-
+	 */
 	
 	// Create a simple function to delete our transient
 	public static function delete_transient() {
@@ -538,8 +528,8 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 
 function debug_Post_Type__ft_link(){
 
-	\do_action( 'qm/info', Post_Type__ft_link::__is_privacy_relevant( 'carsten-bach.de' ) );
-	\do_action( 'qm/info', Post_Type__ft_link::__is_privacy_relevant( 'jimdo.com/carsten-bach.de' ) );
+	// \do_action( 'qm/info', Post_Type__ft_link::__is_privacy_relevant( 'carsten-bach.de' ) );
+	// \do_action( 'qm/info', Post_Type__ft_link::__is_privacy_relevant( 'jimdo.com/carsten-bach.de' ) );
 
 
 #	$ft_link = new Post_Type__ft_link();
