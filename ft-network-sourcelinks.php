@@ -27,7 +27,7 @@ use Figuren_Theater\Network\Taxonomies;
  * Author URI:      https://carsten-bach.de
  * Text Domain:     ft-network-sourcelinks
  * Domain Path:     /languages
- * Version:         0.6.0
+ * Version:         0.7.0
  *
  * @package         Ft_Network_Sourcelinks
  */
@@ -107,6 +107,12 @@ class Management implements EventManager\SubscriberInterface
 		\Figuren_Theater\API::get('PT')->add(
 			Post_Types\Post_Type__ft_link::NAME,
 			Post_Types\Post_Type__ft_link::get_instance()
+		);
+
+		// 1.1 Register our shadow-taxonomy for the 'ft_link' post_type
+		\Figuren_Theater\API::get('TAX')->add(
+			Taxonomies\Taxonomy__ft_link_shadow::NAME,
+			Taxonomies\Taxonomy__ft_link_shadow::get_instance()
 		);
 
 		// 2. Re-Use old and existing 'link_category'

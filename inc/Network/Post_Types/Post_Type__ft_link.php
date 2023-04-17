@@ -4,8 +4,6 @@ declare(strict_types=1);
 namespace Figuren_Theater\Network\Post_Types;
 
 use Figuren_Theater\inc\EventManager;
-
-// use Figuren_Theater\Network\Features;
 use Figuren_Theater\Network\Taxonomies;
 use Figuren_Theater\Network\Users;
 
@@ -55,13 +53,8 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 
 			'add_meta_boxes_' . static::NAME => 'modify_metaboxes',
 
-			// just handle multiple calls on that same action
-			'save_post_' . static::NAME      => [ 'save_post__hooks', 0 ],
-
-
-			// moved to ::branch:: 
-			// __NAMESPACE__ . '\\found_importable_endpoint'      => 'save_importable_endpoint',
-
+			// invalidate cache
+			'save_post_' . static::NAME      => [ 'delete_transient', 10 ],
 
 			// FRONTEND
 			'post_type_link'                 => [ 'permalink_source_url', 10, 2 ],
@@ -79,13 +72,13 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 	public function get_post_data() : Array
 	{
 		return [
-			'post_author' => ( isset( $this->arguments['user_id'] ) ) ? $this->arguments['user_id'] : Users\ft_bot::id(), 
-			'post_title' => $this->arguments['new_post_title'],
-			'post_content' => $this->arguments['new_post_content'],
-			'post_status' => 'publish', // start with private, switch to publish on later point
-			'post_type' => self::NAME,
+			'post_author'    => ( isset( $this->arguments['user_id'] ) ) ? $this->arguments['user_id'] : Users\ft_bot::id(), 
+			'post_title'     => $this->arguments['new_post_title'],
+			'post_content'   => $this->arguments['new_post_content'],
+			'post_status'    => 'publish', // start with private, switch to publish on later point
+			'post_type'      => self::NAME,
 			'comment_status' => 'closed',
-			'ping_status' => 'closed',
+			'ping_status'    => 'closed',
 			// 'tax_input' => $this->get_post_tax(),
 			// 'meta_input' => $this->get_post_meta(),
 		];
@@ -122,131 +115,6 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 
 		return $tax_input;
 	}
-	public static function save_post__hooks() : void {
-		// invalidate cache
-		\add_action( 'save_post_' . static::NAME, [ static::get_instance(), 'delete_transient'], 10 );
-		// maybe @TODO, move to correct spot
-		\add_action( 'save_post_' . static::NAME, [ static::get_instance(), 'find_importable_endpoint'], 10, 3 );		
-	}
-
-
-	public static function find_importable_endpoint( int $post_ID, WP_Post $post, bool $update ) : void {
-		
-		// run only on the first run
-		if ( $update )
-			return;
-
-		// make sure we have anything to work with
-		if ( empty( $post->post_content ) )
-			return;
-
-		// make sure it is a well formed URL
-		$new_url = \esc_url( 
-			$post->post_content,
-			[
-				'http',
-				'https'
-			],
-			'db'
-		);
-		if ( empty( $new_url ) )
-			return;
-
-		$new_url = \untrailingslashit( $new_url );
-
-		// well prepared,
-		// let's go
-		// 
-		// hand the URL to our RSS-detective
-		if ( static::has_importable_endpoint( $new_url ) )
-			// we found something ...
-			\wp_set_object_terms( 
-				$post_ID,
-				[
-					'is-importable',
-				],
-				'link_category',
-				true
-			);
-
-	}
-
-	public static function get_importable_services() : array {
-		
-		return [
-			// Example
-			// do not add any protocoll
-			// 
-			// 'url-to-search.domain' => '%s/importable/endpoint/',
-			
-			// 
-			'.blogspot.com'  => '%s/feeds/posts/default',
-			
-			// !!
-			'.jimdo.com'     => '%s/rss/blog/',
-			'.jimdofree.com' => '%s/rss/blog/',
-			
-			// 
-			'.tumblr.com'    => '%s/rss',
-			
-			// 
-			'vimeo.com'      => '%s/videos/rss',
-			
-			// 
-			'wix.com'        => '%s/blog-feed.xml',
-			
-			// 
-			'wordpress.com'  => '%s/feed/',
-			
-			// 
-			'youtube.com'    => '%s',
-			
-			// 
-			// 'medium.com/example-site' => 'https://medium.com/feed/example-site',
-			// 
-			// 'twitter.com/example-site' => 'https://nitter.com/...???.../example-site/feed/',
-			// 
-			// 'flickr.com/example-site' => 'https://flickr.com/...???.../some-cryptic-flickr-id',
-
-
-			// NO WAY
-			// - other than a sarcastic blog post - 
-			// 
-			// facebook.com
-			// weebly.com
-
-		];
-
-	}
-
-	public static function has_importable_endpoint( string $new_url ) : bool {
-
-		$found = false;
-		foreach ( static::get_importable_services() as $url_to_search => $pattern ) {
-	
-			if ( $found )
-				return $found;
-
-			if ( false !== strpos( $new_url, $url_to_search ) ) {
-
-				#\do_action( 'qm/info', sprintf( $pattern, $new_url ) . ' can be imported.' );
-				$found = true;
-				\do_action( 
-					__NAMESPACE__ . '\\found_importable_endpoint',
-					sprintf( $pattern, $new_url )
-				);
-			} 
-		}
-
-		if ( $found )
-			return $found;
-
-		\do_action( 'qm/warning', '{new_url} kann nicht importiert werden.', [
-			'new_url' => $new_url,
-		] );
-
-		return $found;
-	}
 
 	protected function prepare_pt() : void {}
 
@@ -279,7 +147,7 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 				// 'comments',
 				// 'revisions',
 				// 'page-attributes',
-				'post-formats',
+				// 'post-formats',
 			),
 
 			'menu_icon'           => 'dashicons-admin-links',
@@ -299,9 +167,8 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 			'hierarchical'        => false, // that to FALSE if not really needed, for performance reasons
 			'description'         => '',
 			'taxonomies'          => [
-				// Features\UtilityFeaturesManager::TAX,
-				// Taxonomies\Taxonomy__ft_site_shadow::NAME, # must be here to allow setting its terms, even when hidden
 				'link_category',
+				Taxonomies\Taxonomy__ft_link_shadow::NAME,
 			],
 
 			// 'rewrite' => true,  // enables editable post_name, called 'permalink|slug'
@@ -483,16 +350,12 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 
 
 
-	public function modify_metaboxes() : void
-	{
+	public function modify_metaboxes() : void {
 
 		\remove_meta_box( 'slugdiv', null, 'normal' );
 
 		if( ! \current_user_can( 'manage_sites' ) )
 			\remove_meta_box( 'postcustom', null, 'normal' );
-
-
-		// \add_meta_box( 'ft_links_post_formats', __( 'Post Formats' ), [$this, 'ft_links_post_formats_metabox'], null, 'side' );
 	}
 
 	public function post_content__metabox( WP_Post $post ) {
@@ -514,8 +377,17 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 	}
 
 
-
 	/**
+	 * Filters the permalink for a post of a custom post type.
+	 *
+	 * @see   https://developer.wordpress.org/reference/hooks/post_type_link/
+	 *
+	 * @param string  $post_link The post's permalink.
+	 * @param WP_Post $post      The post in question.
+	 * @param bool    $leavename Whether to keep the post name.
+	 * @param bool    $sample    Is it a sample permalink.
+	 *
+	 *
 	 * Change the post's permalink to use its source URL instead.
 	 *
 	 * @param string $permalink
@@ -525,7 +397,7 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 	 *
 	 * @return string
 	 */
-	public function permalink_source_url( $permalink, $post ) {
+	public function permalink_source_url( string $permalink, WP_Post $post ) : string {
 		if ( static::NAME !== $post->post_type ) {
 			return $permalink;
 		}
@@ -557,7 +429,7 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 	 *
 	 * @param   string    $url_short [description]
 	 * @return  [type]               [description]
-	 */
+
 	public static function __is_privacy_relevant( string $url_short ) : bool {
 
 		return (bool) array_filter(
@@ -569,10 +441,9 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 			ARRAY_FILTER_USE_KEY
 		);
 
-	// array_keys( Post_Types\Post_Type__ft_link::get_importable_services() )
 		return false;
 	}
-
+	 */
 	
 	// Create a simple function to delete our transient
 	public static function delete_transient() {
@@ -657,8 +528,8 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 
 function debug_Post_Type__ft_link(){
 
-	\do_action( 'qm/info', Post_Type__ft_link::__is_privacy_relevant( 'carsten-bach.de' ) );
-	\do_action( 'qm/info', Post_Type__ft_link::__is_privacy_relevant( 'jimdo.com/carsten-bach.de' ) );
+	// \do_action( 'qm/info', Post_Type__ft_link::__is_privacy_relevant( 'carsten-bach.de' ) );
+	// \do_action( 'qm/info', Post_Type__ft_link::__is_privacy_relevant( 'jimdo.com/carsten-bach.de' ) );
 
 
 #	$ft_link = new Post_Type__ft_link();
