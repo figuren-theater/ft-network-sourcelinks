@@ -92,7 +92,7 @@ class Taxonomy__ft_link_shadow extends Taxonomy__Abstract implements EventManage
 		return $this->post_types = [
 			'post',
 			Post_Types\Post_Type__ft_link::NAME,
-			Data\Feed_Pull::FEED_POSTTYPE,
+			Data\Feed_Pull\FEED_POSTTYPE,
 			// 'event',
 			// 'ft_job',
 		];
@@ -115,7 +115,7 @@ class Taxonomy__ft_link_shadow extends Taxonomy__Abstract implements EventManage
 			'label'              => $this->labels['plural'], // fallback
 			'public'             => false,
 			'publicly_queryable' => false,
-			'show_ui'            => true,
+			'show_ui'            => false,
 			'hierarchical'       => false,
 			'show_tagcloud'      => false,
 			'show_in_menu'       => false,

@@ -110,9 +110,10 @@ class Management implements EventManager\SubscriberInterface
 		);
 
 		// 1.1 Register our shadow-taxonomy for the 'ft_link' post_type
+		$Taxonomy__ft_link_shadow = new Taxonomies\Taxonomy__ft_link_shadow;
 		\Figuren_Theater\API::get('TAX')->add(
-			Taxonomies\Taxonomy__ft_link_shadow::NAME,
-			Taxonomies\Taxonomy__ft_link_shadow::get_instance()
+			$Taxonomy__ft_link_shadow::NAME,
+			$Taxonomy__ft_link_shadow
 		);
 
 		// 2. Re-Use old and existing 'link_category'
