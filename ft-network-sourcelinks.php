@@ -27,7 +27,7 @@ use Figuren_Theater\Network\Taxonomies;
  * Author URI:      https://carsten-bach.de
  * Text Domain:     ft-network-sourcelinks
  * Domain Path:     /languages
- * Version:         0.7.0
+ * Version:         0.8.0
  *
  * @package         Ft_Network_Sourcelinks
  */
