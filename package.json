@@ -1,6 +1,6 @@
 {
 	"name": "ft-network-sourcelinks",
-	"version": "0.8.0",
+	"version": "0.9.0",
 	"author": "Carsten Bach",
 	"license": "GPL-3.0-or-later",
 	"main": "build/index.js",
@@ -17,6 +17,6 @@
 		"i18n:mapjson": "wp i18n make-json languages --pretty-print --no-purge '--use-map={ \"src/index.js\": \"build/index.js\", \"src/save.js\": \"build/index.js\", \"src/edit.js\": \"build/index.js\", \"src/block.json\": \"build/block.json\" }'"
 	},
 	"devDependencies": {
-		"@wordpress/scripts": "^26.2.0"
+		"@wordpress/scripts": "^26.5.0"
 	}
 }
