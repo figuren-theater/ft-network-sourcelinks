@@ -17,6 +17,6 @@
 		"i18n:mapjson": "wp i18n make-json languages --pretty-print --no-purge '--use-map={ \"src/index.js\": \"build/index.js\", \"src/save.js\": \"build/index.js\", \"src/edit.js\": \"build/index.js\", \"src/block.json\": \"build/block.json\" }'"
 	},
 	"devDependencies": {
-		"@wordpress/scripts": "^26.2.0"
+		"@wordpress/scripts": "^26.5.0"
 	}
 }
