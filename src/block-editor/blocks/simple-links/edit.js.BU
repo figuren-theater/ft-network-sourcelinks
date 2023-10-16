@@ -209,7 +209,7 @@ function useLinkData() {
 	);
 
 	return useMemo( () => {
-		/*// TODO: Once the REST API supports passing multiple values to
+		/*// TODO: #30 Once the REST API supports passing multiple values to
 		// 'orderby', this can be removed.
 		// https://core.trac.wordpress.org/ticket/39037
 		const sortedPages = sortBy( pages, [ 'menu_order', 'title.rendered' ] );

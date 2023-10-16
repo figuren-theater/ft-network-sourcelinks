@@ -105,7 +105,7 @@ class Taxonomy__ft_link_shadow extends Taxonomy__Abstract implements EventManage
 			# Override the base names used for labels:
 			'singular' => __('Import Source','figurentheater'),
 			'plural'   => __('Import Sources','figurentheater'),
-			'slug'     => '' #TODO
+			'slug'     => '' #TODO #28 Add documenatation on, why this is '' empty here ?!
 		];
 	}
 

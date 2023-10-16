@@ -84,7 +84,7 @@ class Management implements EventManager\SubscriberInterface
 
 
 
-			// TEMP DISABLED, until sync works, read on down the code
+			// @todo #32 Re-ENABLE - TEMP DISABLED; until sync works, read on down the code
 			// 'after_setup_theme' => 'enable__on_setup_theme', // working
 
 
@@ -204,12 +204,13 @@ class Management implements EventManager\SubscriberInterface
 		  
 
 	/**
-	 * @todo TEMPORARILY DISABLED
+	 * @todo #32
+	 *       TEMPORARILY DISABLED
 	 *       but needed when sync/importing starts
-	 *       so we can assign different post_formats based on the 
+	 *       so we can assign different post_formats based on the
 	 *       source_links post_format
 	 *
-	 * 
+	 *
 	 * Note that you must call 'add_theme_support()' before the init hook gets called!
 	 *
 	 * A good hook to use is the after_setup_theme hook.

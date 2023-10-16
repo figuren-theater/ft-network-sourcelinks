@@ -327,8 +327,8 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 		if( null === $post )
 			global $post;
 
-		
-		// @TODO
+
+		// @todo #25
 		// we have this string-cleaning now 3 times
 		// 
 		// - plugins\ft-network-sourcelinks\src\block-editor\blocks\filtered-links\index.php#L90
@@ -421,8 +421,8 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 
 
 	/**
-	 * @todo Everything.
-	 * 
+	 * @todo #27 Refactor __is_ft_link_privacy_relevant()
+	 *
 	 * [__is_ft_link_privacy_relevant description]
 	 *
 	 * @package [package]

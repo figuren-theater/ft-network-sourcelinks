@@ -94,8 +94,8 @@ class Preset__wpseo_social implements EventManager\SubscriberInterface {
 				// clean up url as pseudo label
 				// so this makes
 				// https://instagram.com -> instagram
-			
-				// @TODO
+
+				// @todo #25
 				// we have this string-cleaning now 3 times
 				// 
 				// - plugins\ft-network-sourcelinks\src\block-editor\blocks\filtered-links\index.php#L90
@@ -179,7 +179,7 @@ class Preset__wpseo_social implements EventManager\SubscriberInterface {
 
 		if ( isset( $_urls['pinterest'] ) && ( !isset( $wpseo_social['pinterest_url'] ) || empty( $wpseo_social['pinterest_url'] ))) {
 			$wpseo_social['pinterest_url'] = $_urls['pinterest'];
-			// @TODO add handling for post_meta 'pinterestverify'
+			// @TODO #26 add handling for post_meta 'pinterestverify'
 		}
 
 		if ( isset( $_urls['twitter'] ) && ( !isset( $wpseo_social['twitter_site'] ) || empty( $wpseo_social['twitter_site'] ))) {

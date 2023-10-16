@@ -59,7 +59,8 @@ function render_block( $attributes, $content, $block ) {
 		return '';
 
 
-	// TODO // not used at the moment, so it defaults to: div
+	// TODO #29 // consider using $attributes['tagName']
+	// which is not used at the moment, so it defaults to: ul
 	$tag_name = empty( $attributes['tagName'] ) ? 'ul' : $attributes['tagName'];
 	
 	// get and merge wrapper attributes with text-align CSS class
@@ -78,8 +79,8 @@ function render_block( $attributes, $content, $block ) {
 		function( $link ) use ( $attributes )
 		{
 			// die(var_export([$_url,$link->post_content],true));
-			
-			// @TODO
+
+			// @todo #25
 			// we have this string-cleaning now 3 times
 			// 
 			// - plugins\ft-network-sourcelinks\src\block-editor\blocks\filtered-links\index.php#L90

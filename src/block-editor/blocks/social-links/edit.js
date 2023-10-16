@@ -136,7 +136,7 @@ export default function Edit() {
         []
     );
 
-    // @todo
+    // @todo #31
     // check for more than one InnerBlocks
     // and only then
     // look for the links
