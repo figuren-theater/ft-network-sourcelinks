@@ -44,7 +44,7 @@ const getHostnameFromRegex = ( url ) => {
 /**
  * [buildBlock description]
  *
- * Normally the 'ft_link' posttype lacks of the 
+ * Normally the 'ft_link' posttype lacks of the
  * normal args 'content', because its pt definition
  * doesn't define 'Editor' as pt support.
  *
@@ -72,7 +72,7 @@ const buildBlock = ( post ) =>
 	} ];
 }
 
- 
+
 // // GET
 // apiFetch( { path: '/wp/v2/ft_link' } ).then( ( posts ) => {
 //     console.log( posts );
@@ -84,7 +84,7 @@ wp.domReady( function() {
 });
 */
 
- 
+
 
 
 /**
@@ -106,7 +106,7 @@ async get_inner_link_blocks() {
 
 		const query_args = {
 			// path: '/wp/v2/ft_link', // with apiFetch
-			data: { 
+			data: {
 				per_page: 25, // beware of the 5 'posts_per_page' default
 				// status: "publish",
 			}

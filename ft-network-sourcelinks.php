@@ -88,7 +88,7 @@ class Management implements EventManager\SubscriberInterface
 			// 'after_setup_theme' => 'enable__on_setup_theme', // working
 
 
-			// 
+			//
 			// 'admin_menu' => 'enable__on_admin', //
 		);
 	}
@@ -98,13 +98,13 @@ class Management implements EventManager\SubscriberInterface
 	public function enable() : void
 	{
 
-		\load_plugin_textdomain( 
-			'ft-network-sourcelinks', 
+		\load_plugin_textdomain(
+			'ft-network-sourcelinks',
 			false,
 			dirname( \plugin_basename( __FILE__ ) ) . '/languages'
 			// $this->plugin_dir_path . '/languages'
 		);
-		
+
 
 		// 1. Register our post_type 'ft_link'
 		\Figuren_Theater\API::get('PT')->add(
@@ -149,17 +149,17 @@ class Management implements EventManager\SubscriberInterface
 		if ( 'core/query' === $parsed_block['blockName'] ) {
 			// If the block has a `taxQuery` attribute, then find the corresponding cat ID and set the `categoryIds` attribute.
 			// TODO: support multiple?
-			if ( 
+			if (
 				isset( $parsed_block[ 'attrs' ][ 'query' ][ 'search' ] )
 				&&
 				strpos( $parsed_block[ 'attrs' ][ 'query' ][ 'search' ], 'link_category:' )
 			) {
 				// die(var_dump($parsed_block));
-				
+
 
 				#if ( is_string( $parsed_block[ 'attrs' ][ 'query' ][ 'taxQuery' ]['link_category'][0] ) )
 				$_link_cat = array_flip( explode(':', $parsed_block[ 'attrs' ][ 'query' ][ 'search' ] ) );
-				$tax_term = get_term_by( 
+				$tax_term = get_term_by(
 					'slug',
 					$_link_cat[0],
 					'link_category',
@@ -179,13 +179,13 @@ class Management implements EventManager\SubscriberInterface
 	public function i18n()
 	{
 
-		\load_plugin_textdomain( 
-			'ft-network-sourcelinks', 
+		\load_plugin_textdomain(
+			'ft-network-sourcelinks',
 			false,
 			dirname( \plugin_basename( __FILE__ ) ) . '/languages'
 			// $this->plugin_dir_path . '/languages'
 		);
-		
+
 		/*
 		\wp_set_script_translations(
 			'figurentheater-figurentheater-production-duration-editor-script',
@@ -201,7 +201,7 @@ class Management implements EventManager\SubscriberInterface
 		*/
 	}
 
-		  
+
 
 	/**
 	 * @todo #32
@@ -311,13 +311,13 @@ class Management implements EventManager\SubscriberInterface
 	{
 
 		#		\do_action( 'qm/debug', $this->get_urls() );
-		
+
 		#		\do_action( 'qm/info', '{fn}: {value}', [
 		#		    'fn' => "get_taxonomy( 'link_category' )",
 		#		    'value' => var_export( \get_taxonomy( 'link_category' ), true ),
 		#		] );
 		#
-		
+
 		#		\do_action( 'qm/info', '{fn}: {value}', [
 		#		    'fn' => "\get_post_type( 'link' )",
 		#		    'value' => var_export( \get_post_type( 'link' ), true ),
@@ -353,20 +353,20 @@ $management = Management::init();
 
 
 // runs once, on activation
-// 
+//
 // after reading a loooong thread at
 // https://core.trac.wordpress.org/ticket/14170
 // I know now, that we should follow a new path
 // because of multisite vs. register_activation_hook
-// 
+//
 // let us now do this from within the taxonomy,
 // when visiting the links edit.php
 /*
 \register_activation_hook( __FILE__, function(){
 	// create 'link_category' taxonomy terms
-	
+
 	// create first 'ft_link' using site_url()
-	
+
 	// add_option('default_link_category')
-	
+
 } );*/

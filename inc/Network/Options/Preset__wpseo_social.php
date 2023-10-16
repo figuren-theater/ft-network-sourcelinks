@@ -97,12 +97,12 @@ class Preset__wpseo_social implements EventManager\SubscriberInterface {
 
 				// @todo #25
 				// we have this string-cleaning now 3 times
-				// 
+				//
 				// - plugins\ft-network-sourcelinks\src\block-editor\blocks\filtered-links\index.php#L90
 				// - plugins\ft-network-sourcelinks\inc\Network\Post_Types\Post_Type__ft_link.php#L330
 				// - plugins\ft-network-sourcelinks\inc\Network\Options\Preset__wpseo_social.php#L142
-				// 
-				// 
+				//
+				//
 				// cleanup html
 				// especially from wp_auto_p
 				$_url = \wp_kses( $v->post_content, [] );
@@ -136,7 +136,7 @@ class Preset__wpseo_social implements EventManager\SubscriberInterface {
 	/**
 	 * [pre_option_wpseo_social description]
 	 *
-	 * 2022.06.08: Added Array|bool for situations´, 
+	 * 2022.06.08: Added Array|bool for situations´,
 	 *             where 'wpseo_social' is not set and/or not filtered yet.
 	 *             Just to prevent fatals ;).
 	 *

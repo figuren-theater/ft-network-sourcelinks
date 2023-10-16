@@ -73,7 +73,7 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 	public function get_post_data() : Array
 	{
 		return [
-			'post_author'    => ( isset( $this->arguments['user_id'] ) ) ? $this->arguments['user_id'] : Users\ft_bot::id(), 
+			'post_author'    => ( isset( $this->arguments['user_id'] ) ) ? $this->arguments['user_id'] : Users\ft_bot::id(),
 			'post_title'     => $this->arguments['new_post_title'],
 			'post_content'   => $this->arguments['new_post_content'],
 			'post_status'    => 'publish', // start with private, switch to publish on later point
@@ -97,9 +97,9 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 	}
 
 	/**
-	 * Get all taxonomies and its terms (IDs) 
-	 * as multidimesnional array, 
-	 * properly prepared to be used 
+	 * Get all taxonomies and its terms (IDs)
+	 * as multidimesnional array,
+	 * properly prepared to be used
 	 * as part of wp_insert_post.
 	 *
 	 * Structural Example:
@@ -185,10 +185,10 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 
 			/**
 			 * Localiced Labels
-			 * 
-			 * ExtendedCPTs generates the default labels in English for your post type. 
-			 * If you need to allow your post type labels to be localized, 
-			 * then you must explicitly provide all of the labels (in the labels parameter) 
+			 *
+			 * ExtendedCPTs generates the default labels in English for your post type.
+			 * If you need to allow your post type labels to be localized,
+			 * then you must explicitly provide all of the labels (in the labels parameter)
 			 * so the strings can be translated. There is no shortcut for this.
 			 *
 			 * @source https://github.com/johnbillion/extended-cpts/pull/5#issuecomment-33756474
@@ -330,12 +330,12 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 
 		// @todo #25
 		// we have this string-cleaning now 3 times
-		// 
+		//
 		// - plugins\ft-network-sourcelinks\src\block-editor\blocks\filtered-links\index.php#L90
 		// - plugins\ft-network-sourcelinks\inc\Network\Post_Types\Post_Type__ft_link.php#L330
 		// - plugins\ft-network-sourcelinks\inc\Network\Options\Preset__wpseo_social.php#L142
-		// 
-		// 
+		//
+		//
 		// cleanup html
 		// especially from wp_auto_p
 		$_url = \wp_kses( $post->post_content, [] );
@@ -344,7 +344,7 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 		// last check
 		if ( ! $_url = \esc_url( $_url ) )
 			return '';
-	
+
 		$_short_url = \url_shorten( $_url );
 		return "<a href='$_url'>$_short_url</a>";
 	}
@@ -402,7 +402,7 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 		if ( static::NAME !== $post->post_type ) {
 			return $permalink;
 		}
-		
+
 		$url = \esc_url( $post->post_content );
 		return $url ?? $permalink;
 	}
@@ -464,7 +464,7 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 		}
 		return $ft_link_query;
 	}
-	
+
 	public function query_urls() : array {
 
 		// get all IDs of 'Links' in our 'Own' 'link_category' now,

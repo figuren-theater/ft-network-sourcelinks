@@ -19,7 +19,7 @@ import { store as coreDataStore } from '@wordpress/core-data';
 import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 import { createElement } from '@wordpress/element'; //React.createElement
 
-import { 
+import {
     Spinner,
 } from '@wordpress/components';
 
@@ -53,7 +53,7 @@ const getHostnameFromRegex = ( url ) => {
 /**
  * [buildBlock description]
  *
- * Normally the 'ft_link' posttype lacks of the 
+ * Normally the 'ft_link' posttype lacks of the
  * normal args 'content', because its pt definition
  * doesn't define 'Editor' as pt support.
  *
@@ -100,19 +100,19 @@ export default function Edit() {
     ];
 
     // get core option 'default_link_category'
-    // 
-    // V1 
+    //
+    // V1
     // wp.data.select( 'core' ).getEntityRecord('root','site','default_link_category')
     // 404
     // https://welttag.puppen.test/wp-json/wp/v2/settings/default_link_category?_locale=user
-    // 
+    //
     // V2
     // wp.data.select('core').getEntityRecord( 'root', '__unstableBase' )
     // returns some, but not ours
-    // 
-    // 
+    //
+    //
     // RESULT
-    // Keep this unfiltered and return all existing links 
+    // Keep this unfiltered and return all existing links
     // (for now)
 
     const { links, hasResolved }  = useSelect(
@@ -147,7 +147,7 @@ export default function Edit() {
 		return (
     		<div { ...useBlockProps() }>
     			<Spinner />
-    		</div>    
+    		</div>
 		)
 	}
 
@@ -157,18 +157,18 @@ export default function Edit() {
             const MINIMAL_TEMPLATE = [
                 [ 'core/social-links', {} ]
             ];
-    
+
             return(
                 <div { ...useBlockProps() }>
                     <InnerBlocks
                         allowedBlocks={ ALLOWED_BLOCKS }
                         template={ MINIMAL_TEMPLATE }
                     />
-                </div>    
+                </div>
             )
     }
 
-    // finished the query 
+    // finished the query
     // and found some
 	let ft_link_blocks = links.map( buildBlock )
 
@@ -180,7 +180,7 @@ export default function Edit() {
 
     //console.log( links )
     //console.log( ft_link_blocks )
-	
+
     return (
 		<div { ...useBlockProps() }>
             <InnerBlocks
