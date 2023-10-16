@@ -32,6 +32,9 @@ use Figuren_Theater\Network\Taxonomies;
  * @package         Ft_Network_Sourcelinks
  */
 
+ const TRANSIENT_KEY = 'ft_ns_urls';
+
+
 /**
  * This class handles all the major use-cases for external URLs in WordPress
  *
@@ -224,18 +227,11 @@ class Management implements EventManager\SubscriberInterface
 	{
 		$this->debug();
 	}*/
-
-
-	public static function get_urls() : Array
-	{
-		// minimal caching
-		if( isset( self::$urls ) && !empty( self::$urls ) )
-			return self::$urls;
-
+	public static function query_urls() : Array {
 		$ft_query = \Figuren_Theater\FT_Query::init();
 
 		//
-		return self::$urls = $ft_query->find_many_by_type(
+		return $ft_query->find_many_by_type(
 			Post_Types\Post_Type__ft_link::NAME,
 			'publish',
 			[
@@ -252,9 +248,49 @@ class Management implements EventManager\SubscriberInterface
 				'update_post_term_cache' => false,
 
 				// 'suppress_filters'       => true,
+				'no_found_rows'  => true, // Useful when pagination is not needed.
+				'posts_per_page' => 25,
 			]
 		);
+	}
 
+	/**
+	 * Get stored labels from the database.
+	 *
+	 * Uses transients to cache simplified WP_Query results.
+	 *
+	 * @return Array An array of Label objects.
+	 */
+	public static function get_stored_urls() : array {
+
+		// Check if the value is already stored.
+		$stored_urls = \get_transient( TRANSIENT_KEY );
+
+		if ( empty( $stored_urls ) ) {
+
+			// Retrieve posts from DB.
+			$stored_urls = static::query_urls();
+
+			// Store for long,
+			// because this will beflushed with every new (and updated) 'wp_block' post.
+			\set_transient(
+				TRANSIENT_KEY,
+				$stored_urls,
+				\WEEK_IN_SECONDS
+			);
+		}
+
+		return $stored_urls;
+	}
+
+
+	public static function get_urls() : Array
+	{
+		// minimal caching
+		if( isset( self::$urls ) && !empty( self::$urls ) )
+			return self::$urls;
+
+		return self::$urls = static::get_stored_urls();
 	}
 
 

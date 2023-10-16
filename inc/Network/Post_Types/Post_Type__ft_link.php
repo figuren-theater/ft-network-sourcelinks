@@ -6,6 +6,7 @@ namespace Figuren_Theater\Network\Post_Types;
 use Figuren_Theater\inc\EventManager;
 use Figuren_Theater\Network\Taxonomies;
 use Figuren_Theater\Network\Users;
+use Figuren_Theater\Network\Sources;
 
 use WP_Post;
 
@@ -444,10 +445,13 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 		return false;
 	}
 	 */
-	
+
 	// Create a simple function to delete our transient
 	public static function delete_transient() {
+		// Has all our links with 'OWN' taxonomy-term.
 		\delete_transient( 'ft_link_own_q' );
+		// Has all our links.
+		\delete_transient( Sources\TRANSIENT_KEY );
 	}
 
 
