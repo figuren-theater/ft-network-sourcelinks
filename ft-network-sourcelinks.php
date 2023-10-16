@@ -32,6 +32,9 @@ use Figuren_Theater\Network\Taxonomies;
  * @package         Ft_Network_Sourcelinks
  */
 
+ const TRANSIENT_KEY = 'ft_ns_urls';
+
+
 /**
  * This class handles all the major use-cases for external URLs in WordPress
  *
@@ -81,11 +84,11 @@ class Management implements EventManager\SubscriberInterface
 
 
 
-			// TEMP DISABLED, until sync works, read on down the code
+			// @todo #32 Re-ENABLE - TEMP DISABLED; until sync works, read on down the code
 			// 'after_setup_theme' => 'enable__on_setup_theme', // working
 
 
-			// 
+			//
 			// 'admin_menu' => 'enable__on_admin', //
 		);
 	}
@@ -95,13 +98,13 @@ class Management implements EventManager\SubscriberInterface
 	public function enable() : void
 	{
 
-		\load_plugin_textdomain( 
-			'ft-network-sourcelinks', 
+		\load_plugin_textdomain(
+			'ft-network-sourcelinks',
 			false,
 			dirname( \plugin_basename( __FILE__ ) ) . '/languages'
 			// $this->plugin_dir_path . '/languages'
 		);
-		
+
 
 		// 1. Register our post_type 'ft_link'
 		\Figuren_Theater\API::get('PT')->add(
@@ -146,17 +149,17 @@ class Management implements EventManager\SubscriberInterface
 		if ( 'core/query' === $parsed_block['blockName'] ) {
 			// If the block has a `taxQuery` attribute, then find the corresponding cat ID and set the `categoryIds` attribute.
 			// TODO: support multiple?
-			if ( 
+			if (
 				isset( $parsed_block[ 'attrs' ][ 'query' ][ 'search' ] )
 				&&
 				strpos( $parsed_block[ 'attrs' ][ 'query' ][ 'search' ], 'link_category:' )
 			) {
 				// die(var_dump($parsed_block));
-				
+
 
 				#if ( is_string( $parsed_block[ 'attrs' ][ 'query' ][ 'taxQuery' ]['link_category'][0] ) )
 				$_link_cat = array_flip( explode(':', $parsed_block[ 'attrs' ][ 'query' ][ 'search' ] ) );
-				$tax_term = get_term_by( 
+				$tax_term = get_term_by(
 					'slug',
 					$_link_cat[0],
 					'link_category',
@@ -176,13 +179,13 @@ class Management implements EventManager\SubscriberInterface
 	public function i18n()
 	{
 
-		\load_plugin_textdomain( 
-			'ft-network-sourcelinks', 
+		\load_plugin_textdomain(
+			'ft-network-sourcelinks',
 			false,
 			dirname( \plugin_basename( __FILE__ ) ) . '/languages'
 			// $this->plugin_dir_path . '/languages'
 		);
-		
+
 		/*
 		\wp_set_script_translations(
 			'figurentheater-figurentheater-production-duration-editor-script',
@@ -198,15 +201,16 @@ class Management implements EventManager\SubscriberInterface
 		*/
 	}
 
-		  
+
 
 	/**
-	 * @todo TEMPORARILY DISABLED
+	 * @todo #32
+	 *       TEMPORARILY DISABLED
 	 *       but needed when sync/importing starts
-	 *       so we can assign different post_formats based on the 
+	 *       so we can assign different post_formats based on the
 	 *       source_links post_format
 	 *
-	 * 
+	 *
 	 * Note that you must call 'add_theme_support()' before the init hook gets called!
 	 *
 	 * A good hook to use is the after_setup_theme hook.
@@ -224,18 +228,11 @@ class Management implements EventManager\SubscriberInterface
 	{
 		$this->debug();
 	}*/
-
-
-	public static function get_urls() : Array
-	{
-		// minimal caching
-		if( isset( self::$urls ) && !empty( self::$urls ) )
-			return self::$urls;
-
+	public static function query_urls() : Array {
 		$ft_query = \Figuren_Theater\FT_Query::init();
 
 		//
-		return self::$urls = $ft_query->find_many_by_type(
+		return $ft_query->find_many_by_type(
 			Post_Types\Post_Type__ft_link::NAME,
 			'publish',
 			[
@@ -252,9 +249,49 @@ class Management implements EventManager\SubscriberInterface
 				'update_post_term_cache' => false,
 
 				// 'suppress_filters'       => true,
+				'no_found_rows'  => true, // Useful when pagination is not needed.
+				'posts_per_page' => 25,
 			]
 		);
+	}
 
+	/**
+	 * Get stored labels from the database.
+	 *
+	 * Uses transients to cache simplified WP_Query results.
+	 *
+	 * @return Array An array of Label objects.
+	 */
+	public static function get_stored_urls() : array {
+
+		// Check if the value is already stored.
+		$stored_urls = \get_transient( TRANSIENT_KEY );
+
+		if ( empty( $stored_urls ) ) {
+
+			// Retrieve posts from DB.
+			$stored_urls = static::query_urls();
+
+			// Store for long,
+			// because this will beflushed with every new (and updated) 'wp_block' post.
+			\set_transient(
+				TRANSIENT_KEY,
+				$stored_urls,
+				\WEEK_IN_SECONDS
+			);
+		}
+
+		return $stored_urls;
+	}
+
+
+	public static function get_urls() : Array
+	{
+		// minimal caching
+		if( isset( self::$urls ) && !empty( self::$urls ) )
+			return self::$urls;
+
+		return self::$urls = static::get_stored_urls();
 	}
 
 
@@ -274,13 +311,13 @@ class Management implements EventManager\SubscriberInterface
 	{
 
 		#		\do_action( 'qm/debug', $this->get_urls() );
-		
+
 		#		\do_action( 'qm/info', '{fn}: {value}', [
 		#		    'fn' => "get_taxonomy( 'link_category' )",
 		#		    'value' => var_export( \get_taxonomy( 'link_category' ), true ),
 		#		] );
 		#
-		
+
 		#		\do_action( 'qm/info', '{fn}: {value}', [
 		#		    'fn' => "\get_post_type( 'link' )",
 		#		    'value' => var_export( \get_post_type( 'link' ), true ),
@@ -316,20 +353,20 @@ $management = Management::init();
 
 
 // runs once, on activation
-// 
+//
 // after reading a loooong thread at
 // https://core.trac.wordpress.org/ticket/14170
 // I know now, that we should follow a new path
 // because of multisite vs. register_activation_hook
-// 
+//
 // let us now do this from within the taxonomy,
 // when visiting the links edit.php
 /*
 \register_activation_hook( __FILE__, function(){
 	// create 'link_category' taxonomy terms
-	
+
 	// create first 'ft_link' using site_url()
-	
+
 	// add_option('default_link_category')
-	
+
 } );*/

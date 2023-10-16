@@ -43,7 +43,7 @@ function block_init() {
  * @param string   $content    Block default content.
  * @param WP_Block $block      Block instance.
  *
- * @return string 
+ * @return string
  */
 function render_block( $attributes, $content, $block ) {
 
@@ -59,13 +59,14 @@ function render_block( $attributes, $content, $block ) {
 		return '';
 
 
-	// TODO // not used at the moment, so it defaults to: div
+	// TODO #29 // consider using $attributes['tagName']
+	// which is not used at the moment, so it defaults to: ul
 	$tag_name = empty( $attributes['tagName'] ) ? 'ul' : $attributes['tagName'];
-	
+
 	// get and merge wrapper attributes with text-align CSS class
 	$wrapper_attributes = \get_block_wrapper_attributes();
 
-	// // 
+	// //
 	// $tag_name = empty( $attributes['tagName'] ) ? 'pre' : $attributes['tagName'];
 	// return sprintf(
 	// 	'<%1$s %2$s>%3$s</%1$s>',
@@ -78,15 +79,15 @@ function render_block( $attributes, $content, $block ) {
 		function( $link ) use ( $attributes )
 		{
 			// die(var_export([$_url,$link->post_content],true));
-			
-			// @TODO
+
+			// @todo #25
 			// we have this string-cleaning now 3 times
-			// 
+			//
 			// - plugins\ft-network-sourcelinks\src\block-editor\blocks\filtered-links\index.php#L90
 			// - plugins\ft-network-sourcelinks\inc\Network\Post_Types\Post_Type__ft_link.php#L330
 			// - plugins\ft-network-sourcelinks\inc\Network\Options\Preset__wpseo_social.php#L142
-			// 
-			// 
+			//
+			//
 			// cleanup html
 			// especially from wp_auto_p
 			$_url = \wp_kses( $link->post_content, [] );
@@ -114,7 +115,7 @@ function render_block( $attributes, $content, $block ) {
 		$links
 	) );
 
-	// 
+	//
 	return sprintf(
 		'<%1$s %2$s>%3$s</%1$s>',
 		$tag_name,
@@ -129,7 +130,7 @@ function get_relevant_links( string $slug )
 
 	$link_category = Taxonomies\Taxonomy__link_category::NAME;
 
-	// 
+	//
 	return $query->find_many_by_type(
 		Post_Types\Post_Type__ft_link::NAME,
 		'publish',

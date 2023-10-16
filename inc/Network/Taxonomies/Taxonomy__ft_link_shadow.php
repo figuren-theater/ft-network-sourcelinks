@@ -12,7 +12,7 @@ use Figuren_Theater\Data;
 
 
 /**
- * 
+ *
  */
 class Taxonomy__ft_link_shadow extends Taxonomy__Abstract implements EventManager\SubscriberInterface
 {
@@ -41,7 +41,7 @@ class Taxonomy__ft_link_shadow extends Taxonomy__Abstract implements EventManage
 			// 'register_taxonomy_args' => ['register_taxonomy_args', 20, 3],
 
 			'manage_edit-'.static::NAME.'_columns' => 'manage_columns',
-	
+
 
 		);
 	}
@@ -83,7 +83,7 @@ class Taxonomy__ft_link_shadow extends Taxonomy__Abstract implements EventManage
 	{
 		// Register shadow connection between this taxonomy and post_type
 		$ft_link__TAX_shadow = new TAX_Shadow( $this::NAME, Post_Types\Post_Type__ft_link::NAME );
-		Figuren_Theater\FT::site()->EventManager->add_subscriber( $ft_link__TAX_shadow ); 
+		Figuren_Theater\FT::site()->EventManager->add_subscriber( $ft_link__TAX_shadow );
 	}
 
 
@@ -105,7 +105,7 @@ class Taxonomy__ft_link_shadow extends Taxonomy__Abstract implements EventManage
 			# Override the base names used for labels:
 			'singular' => __('Import Source','figurentheater'),
 			'plural'   => __('Import Sources','figurentheater'),
-			'slug'     => '' #TODO
+			'slug'     => '' #TODO #28 Add documenatation on, why this is '' empty here ?!
 		];
 	}
 
@@ -141,7 +141,7 @@ class Taxonomy__ft_link_shadow extends Taxonomy__Abstract implements EventManage
 	/**
 	 * Default arguments for custom taxonomies
 	 * Several of these differ from the defaults in WordPress' register_taxonomy() function.
-	 * 
+	 *
 	 * https://github.com/johnbillion/extended-cpts/wiki/Registering-taxonomies#default-arguments-for-custom-taxonomies
 	 */
 	protected function register_extended_taxonomy__args() : array {
