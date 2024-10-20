@@ -56,6 +56,7 @@ class Management implements EventManager\SubscriberInterface
 	 * @var array
 	 */
 	protected static $urls = [];
+	public $plugin_dir_path = '';
 
 
 	function __construct()
@@ -254,7 +255,6 @@ class Management implements EventManager\SubscriberInterface
 			]
 		);
 	}
-
 	/**
 	 * Get stored labels from the database.
 	 *
