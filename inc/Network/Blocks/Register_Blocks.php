@@ -30,6 +30,9 @@ class Register_Blocks implements EventManager\SubscriberInterface
 		// '',
 	];
 
+	protected $plugin_dir_path = '';
+	protected $abs_path_to_build = '';
+
 	function __construct()
 	{
 		$management = Sources\Management::init();

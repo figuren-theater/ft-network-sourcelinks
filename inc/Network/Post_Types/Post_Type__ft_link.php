@@ -32,6 +32,7 @@ class Post_Type__ft_link extends Post_Type__Abstract implements EventManager\Sub
 	 */
 	static private $instance = null;
 
+	protected $arguments = [];
 	protected $query = null;
 
 	function __construct( $arguments = null) {
